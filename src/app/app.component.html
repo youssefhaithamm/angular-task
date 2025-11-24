@@ -1,0 +1,22 @@
+<div class="app-container">
+  <nav class="navbar">
+    <div class="nav-content">
+      <h1 class="logo">Product Catalog Admin</h1>
+      <ul class="nav-links">
+        <li>
+          <a routerLink="/dashboard" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">
+            Dashboard
+          </a>
+        </li>
+        <li>
+          <a routerLink="/products" routerLinkActive="active">
+            Products
+          </a>
+        </li>
+      </ul>
+    </div>
+  </nav>
+  <main class="main-content">
+    <router-outlet />
+  </main>
+</div>

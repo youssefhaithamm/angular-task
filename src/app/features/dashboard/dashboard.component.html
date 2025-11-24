@@ -1,0 +1,82 @@
+<div class="dashboard-container">
+  <div class="header">
+    <h1>Dashboard</h1>
+    <p>Overview of your product catalog</p>
+  </div>
+
+  <div class="stats-grid">
+    <div class="stat-card">
+      <div class="stat-icon total">
+      <i class="fas fa-cubes"></i>
+
+      </div>
+      <div class="stat-content">
+        <h3>Total Products</h3>
+        <p class="stat-value">{{ productService.totalProducts() }}</p>
+      </div>
+    </div>
+
+    <div class="stat-card">
+      <div class="stat-icon in-stock">
+        <i class="fas fa-check-circle"></i>
+
+      </div>
+      <div class="stat-content">
+        <h3>In Stock</h3>
+        <p class="stat-value">{{ productService.productsInStock() }}</p>
+      </div>
+    </div>
+
+    <div class="stat-card">
+      <div class="stat-icon average">
+       <i class="fas fa-dollar-sign"></i>
+
+      </div>
+      <div class="stat-content">
+        <h3>Average Price</h3>
+        <p class="stat-value">${{ productService.averagePrice() | number: '1.2-2' }}</p>
+      </div>
+    </div>
+
+    <div class="stat-card">
+      <div class="stat-icon categories">
+       <i class="fas fa-bars"></i>
+      </div>
+      <div class="stat-content">
+        <h3>Categories</h3>
+        <p class="stat-value">{{ productService.categories().length }}</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="recent-products">
+    <h2>Recent Products</h2>
+    <div class="products-list">
+      @if (productService.recentProducts().length > 0) {
+        @for (product of productService.recentProducts(); track product.id) {
+          <div class="recent-product-card">
+            <img [src]="product.image" [alt]="product.name" />
+            <div class="product-details">
+              <h4>{{ product.name }}</h4>
+              <p class="category">{{ product.category }}</p>
+              <p class="price">${{ product.price | number: '1.2-2' }}</p>
+            </div>
+            <a [routerLink]="['/products', product.id]" class="btn-view">View</a>
+          </div>
+        }
+      } @else {
+        <p class="no-products">No recent products</p>
+      }
+    </div>
+  </div>
+
+  <div class="quick-actions">
+    <h2>Quick Actions</h2>
+    <div class="actions-grid">
+      <a routerLink="/products" class="action-card">
+        <h3>View All Products</h3>
+        <p>Browse and manage your product catalog</p>
+      </a>
+    </div>
+  </div>
+</div>

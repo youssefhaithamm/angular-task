@@ -1,0 +1,147 @@
+<div class="product-detail-container">
+  @if (product()) {
+  <div class="back-link">
+    <a routerLink="/products" class="btn-back">← Back to Products</a>
+  </div>
+
+  <div class="product-detail">
+    <div class="product-image-section">
+      <img [src]="product()!.image" />
+      @if (!product()!.inStock) {
+      <span class="out-of-stock-badge">Out of Stock</span>
+      }
+    </div>
+
+    <div class="product-info-section">
+      @if (!editMode()) {
+
+      <div class="view-mode">
+        <div class="header-actions">
+          <h1>{{ product()!.name }}</h1>
+          <button (click)="toggleEditMode()" class="btn-edit">
+            Edit Product
+          </button>
+        </div>
+        <p class="category">{{ product()!.category }}</p>
+        <p class="price">${{ product()!.price | number : "1.2-2" }}</p>
+        <p class="description">{{ product()!.description }}</p>
+        <div class="stock-status">
+          <span
+            [class.in-stock]="product()!.inStock"
+            [class.out-of-stock]="!product()!.inStock"
+          >
+            {{ product()!.inStock ? "In Stock" : "Out of Stock" }}
+          </span>
+        </div>
+      </div>
+      } @else {
+
+      <div class="edit-mode">
+        <h1>Edit Product</h1>
+        <form [formGroup]="productForm" (ngSubmit)="saveProduct()">
+          <div class="form-group">
+            <label for="name">Product Name *</label>
+            <input
+              type="text"
+              id="name"
+              formControlName="name"
+              class="form-control"
+              [class.error]="
+                productForm.get('name')?.invalid &&
+                productForm.get('name')?.touched
+              "
+            />
+            @if (getFieldError('name')) {
+            <span class="error-message">{{ getFieldError("name") }}</span>
+            }
+          </div>
+
+          <div class="form-group">
+            <label for="price">Price *</label>
+            <input
+              type="number"
+              id="price"
+              formControlName="price"
+              class="form-control"
+              [class.error]="
+                productForm.get('price')?.invalid &&
+                productForm.get('price')?.touched
+              "
+            />
+            @if (getFieldError('price')) {
+            <span class="error-message">{{ getFieldError("price") }}</span>
+            }
+          </div>
+
+          <div class="form-group">
+            <label for="category">Category *</label>
+            <select
+              id="category"
+              formControlName="category"
+              class="form-control"
+              [class.error]="
+                productForm.get('category')?.invalid &&
+                productForm.get('category')?.touched
+              "
+            >
+              <option value="">Select a category</option>
+              @for (category of productService.categories(); track category) {
+              <option [value]="category">{{ category }}</option>
+              }
+            </select>
+            @if (getFieldError('category')) {
+            <span class="error-message">{{ getFieldError("category") }}</span>
+            }
+          </div>
+
+          <div class="form-group">
+            <label for="description">Description</label>
+            <textarea
+              id="description"
+              formControlName="description"
+              rows="4"
+              class="form-control"
+            ></textarea>
+          </div>
+
+          <div class="form-group">
+            <label for="image">Image URL</label>
+            <input
+              type="url"
+              id="image"
+              formControlName="image"
+              class="form-control"
+            />
+          </div>
+
+          <div class="form-group checkbox-group">
+            <label>
+              <input type="checkbox" formControlName="inStock" />
+              In Stock
+            </label>
+          </div>
+
+          <div class="form-actions">
+            <button type="button" (click)="cancelEdit()" class="btn-cancel">
+              Cancel
+            </button>
+            <button
+              type="submit"
+              [disabled]="productForm.invalid"
+              class="btn-save"
+            >
+              Save Changes
+            </button>
+          </div>
+        </form>
+      </div>
+      }
+    </div>
+  </div>
+  } @else {
+  <div class="loading">
+    <p>Loading product...</p>
+  </div>
+  }
+</div>
+
